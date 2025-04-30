@@ -5,26 +5,37 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from .forms import CustomUserCreationForm, LessonForm, TaskForm
 from .models import User, Course, Lesson, Enrollment, Task, Submission
 
-# Регистрация
+# Главная страница
+def home_view(request):
+    return render(request, 'myapp/home.html')
+
+# Регистрация — автоматически назначается роль student
 def register_view(request):
     if request.method == 'POST':
         form = CustomUserCreationForm(request.POST)
         if form.is_valid():
-            user = form.save()
+            user = form.save(commit=False)
+            user.role = 'student'  # 👈 Автоматически студент
+            user.save()
             login(request, user)
-            return redirect('course_list')
+            return redirect('student_dashboard')  # сразу в панель студента
     else:
         form = CustomUserCreationForm()
     return render(request, 'myapp/register.html', {'form': form})
 
-# Вход
+# Вход с переадресацией по роли
 def login_view(request):
     if request.method == 'POST':
         form = AuthenticationForm(request, data=request.POST)
         if form.is_valid():
             user = form.get_user()
             login(request, user)
-            return redirect('course_list')
+            if user.role == 'teacher':
+                return redirect('teacher_dashboard')
+            elif user.role == 'student':
+                return redirect('student_dashboard')
+            else:
+                return redirect('course_list')  # запасной случай
     else:
         form = AuthenticationForm()
     return render(request, 'myapp/login.html', {'form': form})

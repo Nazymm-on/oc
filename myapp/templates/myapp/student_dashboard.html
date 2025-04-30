@@ -1,0 +1,28 @@
+{% extends 'myapp/base.html' %}
+{% block content %}
+<h2 style="margin-bottom: 20px;">Добро пожаловать, {{ user.username }}!</h2>
+
+{% if enrollments %}
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
+    {% for enrollment in enrollments %}
+      <div style="background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.08);">
+        <h3 style="margin-top: 0;">{{ enrollment.course.title }}</h3>
+        <p style="font-size: 14px; color: #555;">
+          {{ enrollment.course.description|truncatewords:20 }}
+        </p>
+        <a href="{% url 'course_detail' enrollment.course.id %}" style="
+          display: inline-block;
+          padding: 8px 16px;
+          background: #008080;
+          color: white;
+          text-decoration: none;
+          border-radius: 6px;
+          margin-top: 10px;
+        ">Перейти к курсу</a>
+      </div>
+    {% endfor %}
+  </div>
+{% else %}
+  <p>Вы пока не записаны ни на один курс.</p>
+{% endif %}
+{% endblock %}
