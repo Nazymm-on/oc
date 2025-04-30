@@ -15,10 +15,10 @@ def register_view(request):
         form = CustomUserCreationForm(request.POST)
         if form.is_valid():
             user = form.save(commit=False)
-            user.role = 'student'  # 👈 Автоматически студент
+            user.role = 'student'
             user.save()
             login(request, user)
-            return redirect('student_dashboard')  # сразу в панель студента
+            return redirect('student_dashboard')
     else:
         form = CustomUserCreationForm()
     return render(request, 'myapp/register.html', {'form': form})
@@ -35,7 +35,7 @@ def login_view(request):
             elif user.role == 'student':
                 return redirect('student_dashboard')
             else:
-                return redirect('course_list')  # запасной случай
+                return redirect('course_list')
     else:
         form = AuthenticationForm()
     return render(request, 'myapp/login.html', {'form': form})
@@ -112,21 +112,13 @@ def submit_task(request, task_id):
         return redirect('student_dashboard')
     return render(request, 'myapp/submit_task.html', {'task': task})
 
+# Галерея курсов
+@login_required
 def course_gallery(request):
-    courses = [
-        {'title': 'Css', 'description': 'CSS is the language we use to style an HTML document'},
-        {'title': 'JavaScript', 'description': 'JavaScript is the programming language of the Web'},
-        {'title': 'Html', 'description': 'HTML is the standard markup language for Web pages.'},
-        {'title': 'Python', 'description': 'Python is a popular programming language.'},
-        {'title': 'Java', 'description': 'Java to run desktop applications'},
-        {'title': 'Kotlin', 'description': 'Kotlin is a new environment for JVM developers'}
-    ]
+    courses = Course.objects.all()
     return render(request, 'myapp/course_gallery.html', {'courses': courses})
 
-def course_video(request, course_id):
-    course = get_object_or_404(Course, id=course_id)
-    return render(request, 'myapp/course_video.html', {'course': course})
-
+# Страницы по каждому языку
 def html_page(request):
     return render(request, 'myapp/courses/html.html')
 
@@ -145,12 +137,20 @@ def java_page(request):
 def kotlin_page(request):
     return render(request, 'myapp/courses/kotlin.html')
 
-from django.contrib.auth.decorators import login_required
-from .models import Enrollment
-
+# Профиль студента
 @login_required
 def student_profile(request):
     enrollments = Enrollment.objects.filter(student=request.user)
     return render(request, 'myapp/student_profile.html', {
         'enrollments': enrollments
+    })
+
+# Видео по курсу
+@login_required
+def course_video(request, course_id):
+    course = get_object_or_404(Course, pk=course_id)
+    lessons = Lesson.objects.filter(course=course)
+    return render(request, 'myapp/course_video.html', {
+        'course': course,
+        'lessons': lessons
     })

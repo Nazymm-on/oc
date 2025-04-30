@@ -5,22 +5,62 @@
     <meta charset="UTF-8">
     <title>Онлайн-курсы</title>
     <link rel="stylesheet" href="{% static 'myapp/style.css' %}">
+    <style>
+        header {
+            background-color: #ff4da6; /* ярко-розовый */
+            color: white;
+            padding: 15px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 999;
+            animation: slideDown 0.6s ease-in-out;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        body {
+            margin: 0;
+            padding-top: 80px; /* чтобы контент не залезал под header */
+        }
+
+        nav a {
+            color: white;
+            margin: 0 12px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        nav a:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
 <body>
     <header>
-        <div style="display: flex; align-items: center; justify-content: space-between;">
+        <div style="display: flex; align-items: center; justify-content: space-between; max-width: 1200px; margin: 0 auto;">
             <div style="display: flex; align-items: center;">
-                <a href="{% url 'course_list' %}">
+                <a href="{% url 'student_dashboard' %}">
                     <img src="{% static 'myapp/logo.png' %}" alt="Логотип" style="height: 50px; margin-right: 15px;">
                 </a>
                 <h1 style="margin: 0;">Онлайн-курсы</h1>
             </div>
             <nav>
-                <a href="{% url 'course_list' %}">Курсы</a>
                 {% if user.is_authenticated %}
                     {% if user.role == 'student' %}
-                        <a href="{% url 'student_dashboard' %}">Панель студента</a>
-                        <a href="{% url 'student_profile' %}">YOUR PROFILE</a>  <!-- 👈 добавлено -->
+                        <a href="{% url 'student_dashboard' %}">Course</a>
+                        <a href="{% url 'student_profile' %}" class="profile-link">🧑‍💻 YOUR PROFILE</a>
                     {% elif user.role == 'teacher' %}
                         <a href="{% url 'teacher_dashboard' %}">Панель преподавателя</a>
                     {% endif %}

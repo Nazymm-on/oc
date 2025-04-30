@@ -1,20 +1,23 @@
 {% extends 'myapp/base.html' %}
+{% load static %}
+
 {% block content %}
-<h2>Панель преподавателя</h2>
-<ul>
-  {% for course in courses %}
-    <li>
-      <strong>{{ course.title }}</strong>
-      <a href="{% url 'add_lesson' course.id %}">Добавить урок</a>
-      <ul>
-        {% for lesson in course.lesson_set.all %}
-          <li>
-            {{ lesson.title }}
-            <a href="{% url 'add_task' lesson.id %}">Добавить задание</a>
-          </li>
-        {% endfor %}
-      </ul>
-    </li>
-  {% endfor %}
-</ul>
+<div class="hero-section">
+    <div class="welcome">
+        <h2>Welcome, {{ user.username }}! 👨‍🏫</h2>
+    </div>
+</div>
+
+<div class="courses-section">
+    {% for course in courses %}
+        <div class="course-card">
+            <img src="{% static 'myapp/course_icons/'|add:course.title|lower|add:'.png' %}" alt="{{ course.title }}">
+            <h3>{{ course.title }}</h3>
+            <p>{{ course.description }}</p>
+            <a href="{% url 'add_lesson' course.id %}" class="profile-btn">+ Урок</a>
+        </div>
+    {% empty %}
+        <p>Вы пока не добавили ни одного курса.</p>
+    {% endfor %}
+</div>
 {% endblock %}

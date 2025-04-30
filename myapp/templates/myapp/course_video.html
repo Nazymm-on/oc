@@ -1,14 +1,21 @@
 {% extends 'myapp/base.html' %}
 {% block content %}
 <div class="container">
-  <h2>{{ course.title }}</h2>
-  <p>{{ course.description }}</p>
+    <h2>course: {{ course.title|lower }}</h2>
+    <p>{{ course.description }}</p>
 
-  <div class="video-wrapper">
-    <iframe width="800" height="450"
-            src="{{ course.video_url }}"
-            frameborder="0" allowfullscreen>
-    </iframe>
-  </div>
+    {% if lessons %}
+        {% for lesson in lessons %}
+            <div class="lesson">
+                <h3>{{ lesson.title }}</h3>
+                <div class="video-container">
+                    <iframe src="{{ lesson.video_url }}" allowfullscreen></iframe>
+                </div>
+                <p>{{ lesson.lab_description }}</p>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>Нет доступных видео.</p>
+    {% endif %}
 </div>
 {% endblock %}

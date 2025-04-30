@@ -7,6 +7,16 @@ class CustomUserCreationForm(UserCreationForm):
         model = User
         fields = ['username', 'email', 'password1', 'password2', 'role']
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field_name in self.fields:
+            self.fields[field_name].widget.attrs.update({
+                'class': 'form-control',
+                'placeholder': field_name.capitalize().replace("_", " ")
+            }
+)
+
+
 class LessonForm(forms.ModelForm):
     class Meta:
         model = Lesson

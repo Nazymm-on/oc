@@ -1,9 +1,21 @@
 {% extends 'myapp/base.html' %}
+{% load static %}
+
 {% block content %}
-<h2>Регистрация</h2>
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Зарегистрироваться</button>
-</form>
+<div class="auth-wrapper">
+    <div class="auth-tabs">
+        <div class="auth-tab">login</div>
+        <div class="auth-tab active">registration</div>
+    </div>
+
+    <form method="POST" class="auth-form">
+        {% csrf_token %}
+        {{ form.username.as_widget(attrs={"placeholder": "Username"}) }}
+        {{ form.email.as_widget(attrs={"placeholder": "Email"}) }}
+        {{ form.password1.as_widget(attrs={"placeholder": "Password"}) }}
+        {{ form.password2.as_widget(attrs={"placeholder": "Confirm Password"}) }}
+        {{ form.role.as_widget }}
+        <button type="submit">registrate</button>
+    </form>
+</div>
 {% endblock %}

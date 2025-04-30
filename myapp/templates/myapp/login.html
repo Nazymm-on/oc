@@ -1,9 +1,18 @@
 {% extends 'myapp/base.html' %}
+{% load static %}
+
 {% block content %}
-<h2>Вход</h2>
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Войти</button>
-</form>
+<div class="auth-wrapper">
+    <div class="auth-tabs">
+        <div class="auth-tab active">login</div>
+        <div class="auth-tab">registration</div>
+    </div>
+
+    <form method="POST" class="auth-form">
+        {% csrf_token %}
+        {{ form.username }}
+        {{ form.password }}
+        <button type="submit">log in</button>
+    </form>
+</div>
 {% endblock %}

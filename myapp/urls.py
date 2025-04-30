@@ -38,4 +38,5 @@ urlpatterns = [
     path('course/kotlin/', views.kotlin_page, name='kotlin_page'),
 
     path('profile/', views.student_profile, name='student_profile'),
+
 ]
