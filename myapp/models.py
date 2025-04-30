@@ -14,18 +14,24 @@ class Course(models.Model):
     description = models.TextField()
     teacher = models.ForeignKey(User, on_delete=models.CASCADE, limit_choices_to={'role': 'teacher'})
     created_at = models.DateTimeField(auto_now_add=True)
-    video_url = models.URLField(blank=True)  # Новое поле
+    video_url = models.CharField(max_length=255, blank=True, null=True)  # Новое поле
 
     def __str__(self):
         return self.title
 
-
 class Lesson(models.Model):
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
     title = models.CharField(max_length=255)
-    video_url = models.URLField()
+    video_url = models.CharField(max_length=255)  # Только ID видео
     lab_description = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
+
+    def save(self, *args, **kwargs):
+        # Генерация URL перед сохранением в базе данных
+        if self.video_url and not self.video_url.startswith('https://'):
+            self.video_url = f'https://www.youtube.com/embed/{self.video_url}'
+        super().save(*args, **kwargs)
+
 
 
 class Task(models.Model):

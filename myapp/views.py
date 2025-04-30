@@ -4,6 +4,11 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required, user_passes_test
 from .forms import CustomUserCreationForm, LessonForm, TaskForm
 from .models import User, Course, Lesson, Enrollment, Task, Submission
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from .models import Course, Lesson
+from .serializers import CourseSerializer, LessonSerializer
 
 # Главная страница
 def home_view(request):
@@ -154,3 +159,44 @@ def course_video(request, course_id):
         'course': course,
         'lessons': lessons
     })
+
+# myapp/views.py
+
+
+class CourseListView(APIView):
+    def get(self, request, format=None):
+        courses = Course.objects.all()
+        serializer = CourseSerializer(courses, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+class LessonListView(APIView):
+    def get(self, request, course_id, format=None):
+        course = Course.objects.get(id=course_id)
+        lessons = Lesson.objects.filter(course=course)
+        serializer = LessonSerializer(lessons, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+from rest_framework import generics
+from .models import Course, Lesson
+from .serializers import CourseSerializer, LessonSerializer
+
+# Представление для списка курсов (GET)
+class CourseListAPIView(generics.ListAPIView):
+    queryset = Course.objects.all()
+    serializer_class = CourseSerializer
+
+# Представление для уроков конкретного курса (GET)
+class LessonListAPIView(generics.ListAPIView):
+    queryset = Lesson.objects.all()
+    serializer_class = LessonSerializer
+
+    def get_queryset(self):
+        # Фильтруем уроки по курсу
+        course_id = self.kwargs['course_id']
+        return self.queryset.filter(course_id=course_id)
+
+# Представление для детальной информации об уроке
+class LessonDetailAPIView(generics.RetrieveAPIView):
+    queryset = Lesson.objects.all()
+    serializer_class = LessonSerializer
+    lookup_field = 'lesson_id'

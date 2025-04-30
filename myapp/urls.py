@@ -38,5 +38,16 @@ urlpatterns = [
     path('course/kotlin/', views.kotlin_page, name='kotlin_page'),
 
     path('profile/', views.student_profile, name='student_profile'),
+    path('api/courses/', views.CourseListView.as_view(), name='course-list'),
+    path('api/courses/<int:course_id>/lessons/', views.LessonListView.as_view(), name='lesson-list'),
+    # Все страницы для обычных пользователей (представления)
+    path('course_list/', views.course_list, name='course_list'),
+    path('course_detail/<int:course_id>/', views.course_detail, name='course_detail'),
 
+    # API маршруты
+    path('api/courses/', views.CourseListAPIView.as_view(), name='api_course_list'),
+    path('api/courses/<int:course_id>/lessons/', views.LessonListAPIView.as_view(), name='api_course_lessons'),
+    path('api/courses/<int:course_id>/lessons/<int:lesson_id>/', views.LessonDetailAPIView.as_view(), name='api_course_lesson_detail'),
+    # Дополнительные маршруты для других API, например:
+    # path('api/enrollments/', views.EnrollmentListAPIView.as_view(), name='api_enrollment_list'),
 ]

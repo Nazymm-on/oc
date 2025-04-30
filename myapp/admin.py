@@ -52,3 +52,4 @@ class EnrollmentAdmin(admin.ModelAdmin):
     search_fields = ('student__username', 'course__title')
     list_filter = ('course',)
     readonly_fields = ('enrolled_at',)
+

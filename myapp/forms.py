@@ -22,6 +22,13 @@ class LessonForm(forms.ModelForm):
         model = Lesson
         fields = ['title', 'video_url', 'lab_description']
 
+    def clean_video_url(self):
+        video_url = self.cleaned_data.get('video_url')
+        if video_url and not video_url.startswith('https://'):
+            return f'https://www.youtube.com/embed/{video_url}'
+        return video_url
+
+
 class TaskForm(forms.ModelForm):
     class Meta:
         model = Task
