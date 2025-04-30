@@ -14,7 +14,7 @@ class CustomUserAdmin(UserAdmin):
         (None, {'fields': ('role',)}),
     )
 
-admin.site.register(User, CustomUserAdmin)
+admin.site.register(User, CustomUserAdmin)  # ✅ Только один раз
 
 # Курсы
 @admin.register(Course)

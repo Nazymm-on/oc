@@ -1,0 +1,13 @@
+{% extends 'myapp/base.html' %}
+{% block content %}
+<div class="course-page">
+    <a href="{% url 'student_dashboard' %}" class="back-button">← Back to Courses</a>
+    <h2>Java Course</h2>
+    <p>Java is used to run desktop and enterprise applications.</p>
+
+    <div class="video-container">
+        <iframe width="720" height="405" src="https://www.youtube.com/embed/eIrMbAQSU34"
+                title="Java Course" frameborder="0" allowfullscreen></iframe>
+    </div>
+</div>
+{% endblock %}

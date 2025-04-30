@@ -20,6 +20,7 @@
                 {% if user.is_authenticated %}
                     {% if user.role == 'student' %}
                         <a href="{% url 'student_dashboard' %}">Панель студента</a>
+                        <a href="{% url 'student_profile' %}">YOUR PROFILE</a>  <!-- 👈 добавлено -->
                     {% elif user.role == 'teacher' %}
                         <a href="{% url 'teacher_dashboard' %}">Панель преподавателя</a>
                     {% endif %}

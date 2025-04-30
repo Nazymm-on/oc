@@ -10,14 +10,15 @@ class User(AbstractUser):
 
 
 class Course(models.Model):
-    title = models.CharField(max_length=255)
+    title = models.CharField(max_length=100)
     description = models.TextField()
-    logo = models.ImageField(upload_to='course_logos/')
     teacher = models.ForeignKey(User, on_delete=models.CASCADE, limit_choices_to={'role': 'teacher'})
     created_at = models.DateTimeField(auto_now_add=True)
+    video_url = models.URLField(blank=True)  # Новое поле
 
     def __str__(self):
         return self.title
+
 
 class Lesson(models.Model):
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
@@ -25,6 +26,7 @@ class Lesson(models.Model):
     video_url = models.URLField()
     lab_description = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
+
 
 class Task(models.Model):
     lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE)

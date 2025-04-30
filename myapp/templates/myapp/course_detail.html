@@ -1,18 +1,16 @@
 {% extends 'myapp/base.html' %}
 {% block content %}
-<h2>{{ course.title }}</h2>
-<p>{{ course.description }}</p>
 
-<h3>Уроки</h3>
-<ul>
-  {% for lesson in lessons %}
-    <li>
-      <strong>{{ lesson.title }}</strong><br>
-      <video width="400" controls>
-        <source src="{{ lesson.video_url }}">
-      </video><br>
-      <p>{{ lesson.lab_description }}</p>
-    </li>
-  {% endfor %}
-</ul>
+<h2>{{ course.title }} — Lessons</h2>
+
+{% for lesson in lessons %}
+<div class="lesson">
+    <h3>{{ lesson.title }}</h3>
+    <p>{{ lesson.description }}</p>
+    <iframe width="560" height="315" src="{{ lesson.video_url }}" frameborder="0" allowfullscreen></iframe>
+</div>
+{% empty %}
+<p>No lessons yet for this course.</p>
+{% endfor %}
+
 {% endblock %}

@@ -1,0 +1,13 @@
+{% extends 'myapp/base.html' %}
+{% block content %}
+<div class="course-page">
+    <a href="{% url 'student_dashboard' %}" class="back-button">← Back to Courses</a>
+    <h2>JavaScript Course</h2>
+    <p>JavaScript is the programming language of the Web.</p>
+
+    <div class="video-container">
+        <iframe width="720" height="405" src="https://www.youtube.com/embed/PkZNo7MFNFg"
+                title="JavaScript Course" frameborder="0" allowfullscreen></iframe>
+    </div>
+</div>
+{% endblock %}

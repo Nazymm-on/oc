@@ -1,0 +1,23 @@
+{% extends 'myapp/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="hero-section">
+    <div class="welcome">
+        <h2>Welcome to the world of coding</h2>
+        <a href="{% url 'student_dashboard' %}" class="profile-btn">YOUR PROFILE</a>
+    </div>
+</div>
+
+<div class="courses-section">
+    {% for course in courses %}
+    <div class="course-card">
+        <a href="{% url 'course_video' course.title|lower %}">
+            <img src="{% static 'myapp/course_icons/'|add:course.title|lower|add:'.png' %}" alt="{{ course.title }}">
+            <h3>course: {{ course.title }}</h3>
+            <p>{{ course.description }}</p>
+        </a>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

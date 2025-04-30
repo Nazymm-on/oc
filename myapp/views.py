@@ -111,3 +111,46 @@ def submit_task(request, task_id):
         Submission.objects.create(task=task, student=request.user, content=content)
         return redirect('student_dashboard')
     return render(request, 'myapp/submit_task.html', {'task': task})
+
+def course_gallery(request):
+    courses = [
+        {'title': 'Css', 'description': 'CSS is the language we use to style an HTML document'},
+        {'title': 'JavaScript', 'description': 'JavaScript is the programming language of the Web'},
+        {'title': 'Html', 'description': 'HTML is the standard markup language for Web pages.'},
+        {'title': 'Python', 'description': 'Python is a popular programming language.'},
+        {'title': 'Java', 'description': 'Java to run desktop applications'},
+        {'title': 'Kotlin', 'description': 'Kotlin is a new environment for JVM developers'}
+    ]
+    return render(request, 'myapp/course_gallery.html', {'courses': courses})
+
+def course_video(request, course_id):
+    course = get_object_or_404(Course, id=course_id)
+    return render(request, 'myapp/course_video.html', {'course': course})
+
+def html_page(request):
+    return render(request, 'myapp/courses/html.html')
+
+def css_page(request):
+    return render(request, 'myapp/courses/css.html')
+
+def javascript_page(request):
+    return render(request, 'myapp/courses/javascript.html')
+
+def python_page(request):
+    return render(request, 'myapp/courses/python.html')
+
+def java_page(request):
+    return render(request, 'myapp/courses/java.html')
+
+def kotlin_page(request):
+    return render(request, 'myapp/courses/kotlin.html')
+
+from django.contrib.auth.decorators import login_required
+from .models import Enrollment
+
+@login_required
+def student_profile(request):
+    enrollments = Enrollment.objects.filter(student=request.user)
+    return render(request, 'myapp/student_profile.html', {
+        'enrollments': enrollments
+    })

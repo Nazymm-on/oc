@@ -24,4 +24,18 @@ urlpatterns = [
 
     # Отправка задания
     path('task/<int:task_id>/submit/', views.submit_task, name='submit_task'),
+
+    path('courses/', views.course_gallery, name='course_gallery'),
+    path('courses/<str:course_name>/', views.course_video, name='course_video'),
+
+    path('course/<int:course_id>/video/', views.course_video, name='course_video'),
+
+    path('course/html/', views.html_page, name='html_page'),
+    path('course/css/', views.css_page, name='css_page'),
+    path('course/javascript/', views.javascript_page, name='javascript_page'),
+    path('course/python/', views.python_page, name='python_page'),
+    path('course/java/', views.java_page, name='java_page'),
+    path('course/kotlin/', views.kotlin_page, name='kotlin_page'),
+
+    path('profile/', views.student_profile, name='student_profile'),
 ]
