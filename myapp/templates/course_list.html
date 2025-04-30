@@ -1,0 +1,13 @@
+{% extends 'myapp/base.html' %}
+{% block content %}
+<h2>Курсы</h2>
+<ul>
+  {% for course in courses %}
+    <li>
+      <strong>{{ course.title }}</strong><br>
+      {{ course.description|truncatewords:15 }}<br>
+      <a href="{% url 'course_detail' course.id %}">Перейти</a>
+    </li>
+  {% endfor %}
+</ul>
+{% endblock %}

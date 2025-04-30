@@ -1,0 +1,10 @@
+{% extends 'myapp/base.html' %}
+{% block content %}
+<h2>Отправить задание: {{ task.title }}</h2>
+<form method="post">
+  {% csrf_token %}
+  <label>Ответ:</label><br>
+  <textarea name="content" rows="6" cols="50"></textarea><br><br>
+  <button type="submit">Отправить</button>
+</form>
+{% endblock %}

@@ -1,0 +1,9 @@
+{% extends 'myapp/base.html' %}
+{% block content %}
+<h2>Добавить задание к уроку: {{ lesson.title }}</h2>
+<form method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit">Добавить</button>
+</form>
+{% endblock %}

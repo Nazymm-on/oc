@@ -1,0 +1,20 @@
+{% extends 'myapp/base.html' %}
+{% block content %}
+<h2>Панель преподавателя</h2>
+<ul>
+  {% for course in courses %}
+    <li>
+      <strong>{{ course.title }}</strong>
+      <a href="{% url 'add_lesson' course.id %}">Добавить урок</a>
+      <ul>
+        {% for lesson in course.lesson_set.all %}
+          <li>
+            {{ lesson.title }}
+            <a href="{% url 'add_task' lesson.id %}">Добавить задание</a>
+          </li>
+        {% endfor %}
+      </ul>
+    </li>
+  {% endfor %}
+</ul>
+{% endblock %}

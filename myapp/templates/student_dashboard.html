@@ -1,0 +1,11 @@
+{% extends 'myapp/base.html' %}
+{% block content %}
+<h2>Мои курсы</h2>
+<ul>
+  {% for enrollment in enrollments %}
+    <li>{{ enrollment.course.title }}</li>
+  {% empty %}
+    <p>Вы не записаны на курсы.</p>
+  {% endfor %}
+</ul>
+{% endblock %}
