@@ -1,6 +1,6 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
-
+from django.utils.text import slugify
 # Пользователь с ролью
 class User(AbstractUser):
     ROLE_CHOICES = [
@@ -13,12 +13,19 @@ class User(AbstractUser):
         return self.username
 
 # Курс
+
 class Course(models.Model):
     title = models.CharField(max_length=100)
+    slug = models.SlugField(unique=True, blank=True)
     description = models.TextField()
     teacher = models.ForeignKey(User, on_delete=models.CASCADE, limit_choices_to={'role': 'teacher'})
     created_at = models.DateTimeField(auto_now_add=True)
-    video_url = models.CharField(max_length=255, blank=True, null=True)  # Можно использовать как общее видео курса
+    video_url = models.CharField(max_length=255, blank=True, null=True)
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.title)
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return self.title

@@ -211,3 +211,6 @@ def lesson_detail_view(request, course_id, lesson_id):
         'lesson': lesson
     })
 
+def student_dashboard(request):
+    courses = Course.objects.all()
+    return render(request, 'myapp/student_dashboard.html', {'courses': courses})

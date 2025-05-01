@@ -1,6 +1,34 @@
 {% extends 'myapp/base.html' %}
+{% load static %}
+
 {% block content %}
+<style>
+    .back-button {
+        display: inline-block;
+        margin-bottom: 20px;
+        padding: 10px 20px;
+        background-color: #ff4da6;
+        color: white;
+        border: none;
+        border-radius: 12px;
+        text-decoration: none;
+        font-weight: bold;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        transition: background 0.3s ease;
+    }
+
+    .back-button:hover {
+        background-color: #e04390;
+    }
+</style>
+
 <div class="container">
+
+    <!-- Кнопка Назад -->
+    <a href="{% url 'student_dashboard' %}" class="back-button">← Назад</a>
+
+
+    <!-- Название курса и описание -->
     <h2>{{ course.title }}</h2>
     <p>{{ course.description }}</p>
 
