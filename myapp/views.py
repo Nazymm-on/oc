@@ -214,3 +214,20 @@ def lesson_detail_view(request, course_id, lesson_id):
 def student_dashboard(request):
     courses = Course.objects.all()
     return render(request, 'myapp/student_dashboard.html', {'courses': courses})
+
+@user_passes_test(is_teacher)
+def enrolled_students(request, course_id):
+    course = get_object_or_404(Course, id=course_id, teacher=request.user)
+    enrollments = Enrollment.objects.filter(course=course)
+    return render(request, 'myapp/enrolled_students.html', {
+        'course': course,
+        'enrollments': enrollments
+    })
+@user_passes_test(is_teacher)
+def view_submissions(request, task_id):
+    task = get_object_or_404(Task, id=task_id, lesson__course__teacher=request.user)
+    submissions = Submission.objects.filter(task=task)
+    return render(request, 'myapp/view_submissions.html', {
+        'task': task,
+        'submissions': submissions
+    })

@@ -50,4 +50,7 @@ urlpatterns = [
     path('api/courses/<int:course_id>/lessons/<int:lesson_id>/', views.LessonDetailAPIView.as_view(), name='api_course_lesson_detail'),
     # Дополнительные маршруты для других API, например:
     # path('api/enrollments/', views.EnrollmentListAPIView.as_view(), name='api_enrollment_list'),
+    path('course/<int:course_id>/students/', views.enrolled_students, name='enrolled_students'),
+    path('task/<int:task_id>/submissions/', views.view_submissions, name='view_submissions'),
+
 ]

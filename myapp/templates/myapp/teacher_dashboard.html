@@ -2,22 +2,92 @@
 {% load static %}
 
 {% block content %}
-<div class="hero-section">
-    <div class="welcome">
-        <h2>Welcome, {{ user.username }}! 👨‍🏫</h2>
-    </div>
-</div>
+<style>
+    .dashboard-container {
+        max-width: 1100px;
+        margin: 50px auto;
+    }
 
-<div class="courses-section">
-    {% for course in courses %}
-        <div class="course-card">
-            <img src="{% static 'myapp/course_icons/'|add:course.title|lower|add:'.png' %}" alt="{{ course.title }}">
-            <h3>{{ course.title }}</h3>
-            <p>{{ course.description }}</p>
-            <a href="{% url 'add_lesson' course.id %}" class="profile-btn">+ Урок</a>
-        </div>
-    {% empty %}
-        <p>Вы пока не добавили ни одного курса.</p>
-    {% endfor %}
+    .dashboard-header {
+        text-align: center;
+        margin-bottom: 40px;
+    }
+
+    .dashboard-header h2 {
+        font-size: 32px;
+        color: #333;
+    }
+
+    .course-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 25px;
+    }
+
+    .course-card {
+        background-color: #fff;
+        border-radius: 20px;
+        padding: 25px;
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+        transition: transform 0.2s ease;
+        position: relative;
+    }
+
+    .course-card:hover {
+        transform: translateY(-5px);
+    }
+
+    .course-title {
+        font-size: 20px;
+        font-weight: bold;
+        margin-bottom: 10px;
+        color: #ff4da6;
+    }
+
+    .course-description {
+        color: #555;
+        margin-bottom: 15px;
+    }
+
+    .lesson-count {
+        font-size: 14px;
+        color: #888;
+    }
+
+    .add-lesson-btn {
+        display: inline-block;
+        padding: 8px 16px;
+        background-color: #ff4da6;
+        color: white;
+        border-radius: 12px;
+        text-decoration: none;
+        font-weight: bold;
+        margin-top: 10px;
+    }
+
+    .add-lesson-btn:hover {
+        background-color: #e04390;
+    }
+</style>
+
+<div class="dashboard-container">
+    <div class="dashboard-header">
+        <h2>👩‍🏫 Панель преподавателя</h2>
+    </div>
+
+    <div class="course-grid">
+        {% for course in courses %}
+            <div class="course-card">
+                <div class="course-title">{{ course.title }}</div>
+                <div class="course-description">{{ course.description|truncatewords:20 }}</div>
+                <div class="lesson-count">Уроков: {{ course.lesson_set.count }}</div>
+                <a href="{% url 'add_lesson' course.id %}" class="add-lesson-btn">➕ Добавить урок</a>
+                <br>
+                <a href="{% url 'edit_course' course.id %}" class="add-lesson-btn" style="background-color: #ffaa00;">✏️ Редактировать</a>
+            </div>
+        {% empty %}
+            <p>У вас пока нет курсов.</p>
+        {% endfor %}
+    </div>
 </div>
 {% endblock %}
