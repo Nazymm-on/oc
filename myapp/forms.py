@@ -20,7 +20,7 @@ class CustomUserCreationForm(UserCreationForm):
 class LessonForm(forms.ModelForm):
     class Meta:
         model = Lesson
-        fields = ['title', 'video_url', 'lab_description']
+        fields = ['title', 'video_url']
 
     def clean_video_url(self):
         video_url = self.cleaned_data.get('video_url')

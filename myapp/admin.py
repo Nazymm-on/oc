@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from .models import User, Course, Lesson, Task, Submission, Enrollment
 
-# Настройка админки для кастомного пользователя
+# Пользователь
 class CustomUserAdmin(UserAdmin):
     model = User
     list_display = ('username', 'email', 'role', 'is_staff', 'is_active')
@@ -14,21 +14,25 @@ class CustomUserAdmin(UserAdmin):
         (None, {'fields': ('role',)}),
     )
 
-admin.site.register(User, CustomUserAdmin)  # ✅ Только один раз
+admin.site.register(User, CustomUserAdmin)
 
 # Курсы
 @admin.register(Course)
 class CourseAdmin(admin.ModelAdmin):
-    list_display = ('title', 'teacher', 'created_at')
+    list_display = ('title', 'teacher')  # убрал 'created_at', если поля нет
     search_fields = ('title',)
     list_filter = ('teacher',)
 
 # Уроки
 @admin.register(Lesson)
 class LessonAdmin(admin.ModelAdmin):
-    list_display = ('title', 'course', 'created_at')
+    list_display = ('title', 'get_course_title')  # заменили course на метод
     search_fields = ('title', 'course__title')
     list_filter = ('course',)
+
+    def get_course_title(self, obj):
+        return obj.course.title
+    get_course_title.short_description = 'Course'
 
 # Задания
 @admin.register(Task)
@@ -37,7 +41,7 @@ class TaskAdmin(admin.ModelAdmin):
     search_fields = ('title', 'lesson__title')
     list_filter = ('lesson',)
 
-# Отправленные задания (студенты)
+# Отправленные задания
 @admin.register(Submission)
 class SubmissionAdmin(admin.ModelAdmin):
     list_display = ('task', 'student', 'submitted_at', 'grade')
@@ -52,4 +56,3 @@ class EnrollmentAdmin(admin.ModelAdmin):
     search_fields = ('student__username', 'course__title')
     list_filter = ('course',)
     readonly_fields = ('enrolled_at',)
-

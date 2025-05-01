@@ -1,21 +1,27 @@
 {% extends 'myapp/base.html' %}
-{% load static %}
-
 {% block content %}
 <div class="container">
-    <h2>course: {{ course.title }}</h2>
+    <h2>{{ course.title }}</h2>
     <p>{{ course.description }}</p>
 
-    {% if course.video_url %}
-    <div class="video-container">
-        <h3>Watch the video:</h3>
-        <iframe width="560" height="315"
-                src="https://www.youtube.com/embed/{{ course.video_url | slice:':11' }}"
-                frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
-        </iframe>
-    </div>
+    {% if lessons %}
+        {% for lesson in lessons %}
+            <div class="video-card">
+                <h3>{{ lesson.title }}</h3>
+
+                {% if lesson.get_embed_url %}
+                    <div class="video-container">
+                        <iframe src="{{ lesson.get_embed_url }}"
+                                frameborder="0"
+                                allowfullscreen></iframe>
+                    </div>
+                {% else %}
+                    <p>Видео не указано</p>
+                {% endif %}
+            </div>
+        {% endfor %}
     {% else %}
-        <p>Нет доступных видео.</p>
+        <p>Уроки не найдены.</p>
     {% endif %}
 </div>
 {% endblock %}

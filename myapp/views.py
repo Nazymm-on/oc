@@ -10,6 +10,10 @@ from rest_framework import status
 from .models import Course, Lesson
 from .serializers import CourseSerializer, LessonSerializer
 
+from rest_framework import generics
+from .models import Course, Lesson
+from .serializers import CourseSerializer, LessonSerializer
+
 # Главная страница
 def home_view(request):
     return render(request, 'myapp/home.html')
@@ -176,9 +180,6 @@ class LessonListView(APIView):
         serializer = LessonSerializer(lessons, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-from rest_framework import generics
-from .models import Course, Lesson
-from .serializers import CourseSerializer, LessonSerializer
 
 # Представление для списка курсов (GET)
 class CourseListAPIView(generics.ListAPIView):
@@ -200,3 +201,13 @@ class LessonDetailAPIView(generics.RetrieveAPIView):
     queryset = Lesson.objects.all()
     serializer_class = LessonSerializer
     lookup_field = 'lesson_id'
+# Отображение конкретного урока с видео
+@login_required
+def lesson_detail_view(request, course_id, lesson_id):
+    course = get_object_or_404(Course, id=course_id)
+    lesson = get_object_or_404(Lesson, id=lesson_id, course=course)
+    return render(request, 'myapp/lesson_detail.html', {
+        'course': course,
+        'lesson': lesson
+    })
+
