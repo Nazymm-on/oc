@@ -2,17 +2,77 @@
 {% load static %}
 
 {% block content %}
-<div class="auth-wrapper">
-    <div class="auth-tabs">
-        <div class="auth-tab active">login</div>
-        <div class="auth-tab">registration</div>
-    </div>
+<style>
+    .auth-wrapper {
+        max-width: 400px;
+        margin: 60px auto;
+        padding: 40px;
+        background-color: #e6a9b3;
+        border-radius: 25px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        text-align: center;
+        color: #fff;
+    }
 
+    .auth-wrapper h2 {
+        font-size: 28px;
+        margin-bottom: 30px;
+        font-weight: bold;
+        color: white;
+    }
+
+    .auth-form input[type="text"],
+    .auth-form input[type="password"] {
+        width: 100%;
+        padding: 14px;
+        margin-bottom: 18px;
+        border: none;
+        border-radius: 20px;
+        background-color: #f0f4ff;
+        color: #333;
+        font-size: 16px;
+    }
+
+    .auth-form button {
+        padding: 12px 30px;
+        font-size: 16px;
+        background-color: #ff4da6;
+        color: white;
+        border: none;
+        border-radius: 20px;
+        cursor: pointer;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        transition: background 0.3s ease;
+    }
+
+    .auth-form button:hover {
+        background-color: #e04390;
+    }
+
+    .auth-wrapper p {
+        margin-top: 20px;
+        color: #fff;
+    }
+
+    .auth-wrapper a {
+        color: #fff;
+        font-weight: bold;
+        text-decoration: underline;
+    }
+
+    .auth-wrapper a:hover {
+        color: #ffd5e8;
+    }
+</style>
+
+<div class="auth-wrapper">
+    <h2>Log In</h2>
     <form method="POST" class="auth-form">
         {% csrf_token %}
         {{ form.username }}
         {{ form.password }}
-        <button type="submit">log in</button>
+        <button type="submit">Log In</button>
     </form>
+    <p>Нет аккаунта? <a href="{% url 'register' %}">Зарегистрироваться</a></p>
 </div>
 {% endblock %}
