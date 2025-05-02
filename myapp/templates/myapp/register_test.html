@@ -1,0 +1,13 @@
+{% extends 'myapp/base.html' %}
+{% load static %}
+
+{% block content %}
+<div style="max-width: 400px; margin: 50px auto; background: #ffe6ef; padding: 30px; border-radius: 12px;">
+    <h2 style="text-align: center;">Регистрация</h2>
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" style="margin-top: 10px;">Зарегистрироваться</button>
+    </form>
+</div>
+{% endblock %}

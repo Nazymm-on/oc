@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="{% static 'myapp/style_big_video.css' %}">
     <style>
         header {
-            background-color: #ff4da6; /* ярко-розовый */
+            background-color: #ff4da6;
             color: white;
             padding: 15px;
             text-align: center;
@@ -33,7 +33,7 @@
 
         body {
             margin: 0;
-            padding-top: 80px; /* чтобы контент не залезал под header */
+            padding-top: 80px;
         }
 
         nav a {
@@ -45,6 +45,17 @@
 
         nav a:hover {
             text-decoration: underline;
+        }
+
+        .profile-link {
+            background-color: yellow;
+            color: black;
+            padding: 6px 12px;
+            border-radius: 10px;
+        }
+
+        .profile-link:hover {
+            background-color: #ffd700;
         }
     </style>
 </head>
@@ -64,6 +75,8 @@
                         <a href="{% url 'student_profile' %}" class="profile-link">🧑‍💻 YOUR PROFILE</a>
                     {% elif user.role == 'teacher' %}
                         <a href="{% url 'teacher_dashboard' %}">Панель преподавателя</a>
+                        <a href="{% url 'teacher_profile' %}">Профиль</a>
+
                     {% endif %}
                     <a href="{% url 'logout' %}">Выйти</a>
                 {% else %}

@@ -1,0 +1,22 @@
+{% extends 'myapp/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container">
+    <h2>👨‍🎓 Студенты на курсе: {{ course.title }}</h2>
+
+    {% if enrollments %}
+        <ul>
+            {% for enroll in enrollments %}
+                <li>
+                    {{ enroll.student.username }} — {{ enroll.student.email }}
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>На этот курс пока никто не записан.</p>
+    {% endif %}
+
+    <a href="{% url 'teacher_dashboard' %}" class="back-button">← Назад</a>
+</div>
+{% endblock %}

@@ -5,19 +5,18 @@
 <div class="hero-section">
     <div class="welcome">
         <h2>Welcome to the world of coding</h2>
-        <a href="{% url 'student_dashboard' %}" class="profile-btn">YOUR PROFILE</a>
     </div>
 </div>
 
-<div class="courses-section">
+<div class="courses-section" style="display: flex; flex-wrap: wrap; gap: 20px;">
     {% for course in courses %}
-    <div class="course-card">
-        <a href="{% url 'course_video' course.title|lower %}">
-            <img src="{% static 'myapp/course_icons/'|add:course.title|lower|add:'.png' %}" alt="{{ course.title }}">
-            <h3>course: {{ course.title }}</h3>
-            <p>{{ course.description }}</p>
+        <a href="{% url 'course_video' course.id %}" class="course-card" style="width: 30%; background: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); text-decoration: none; color: black;">
+            <img src="{% static 'myapp/course_icons/'|add:course.slug|add:'.png' %}" alt="{{ course.title }}" style="width: 100px;">
+            <h3>Course: {{ course.title }}</h3>
+            <p>{{ course.description|truncatewords:15 }}</p>
         </a>
-    </div>
+    {% empty %}
+        <p>No courses available.</p>
     {% endfor %}
 </div>
 {% endblock %}

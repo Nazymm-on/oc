@@ -1,0 +1,67 @@
+{% extends 'myapp/base.html' %}
+{% block content %}
+<style>
+    .teacher-profile-edit {
+        max-width: 700px;
+        margin: 40px auto;
+        background: #fff5f8;
+        padding: 30px;
+        border-radius: 20px;
+        box-shadow: 0 8px 18px rgba(0, 0, 0, 0.1);
+        font-family: 'Segoe UI', sans-serif;
+    }
+
+    .teacher-profile-edit h2 {
+        font-size: 28px;
+        color: #ff4da6;
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+    .teacher-profile-edit label {
+        display: block;
+        margin-top: 15px;
+        font-weight: bold;
+        color: #e60073;
+    }
+
+    .teacher-profile-edit input[type="text"],
+    .teacher-profile-edit textarea {
+        width: 100%;
+        padding: 12px;
+        margin-top: 8px;
+        border-radius: 10px;
+        border: 1px solid #ccc;
+        font-size: 16px;
+    }
+
+    .teacher-profile-edit button {
+        margin-top: 20px;
+        padding: 12px 30px;
+        font-size: 16px;
+        background-color: #ff4da6;
+        color: white;
+        border: none;
+        border-radius: 20px;
+        cursor: pointer;
+    }
+
+    .teacher-profile-edit button:hover {
+        background-color: #e04390;
+    }
+</style>
+
+<div class="teacher-profile-edit">
+    <h2>Редактировать профиль преподавателя</h2>
+    <form method="POST">
+        {% csrf_token %}
+        <label for="profession">Профессия</label>
+        <input type="text" id="profession" name="profession" value="{{ teacher.profession }}">
+
+        <label for="about">О себе</label>
+        <textarea id="about" name="about" rows="4">{{ teacher.about }}</textarea>
+
+        <button type="submit">Сохранить</button>
+    </form>
+</div>
+{% endblock %}

@@ -7,9 +7,9 @@ from .models import User, Course, Lesson, Enrollment, Task, Submission
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from .models import Course, Lesson
-from .serializers import CourseSerializer, LessonSerializer
-
+from django.http import HttpResponse
+from .models import Course
+from .forms import CourseForm
 from rest_framework import generics
 from .models import Course, Lesson
 from .serializers import CourseSerializer, LessonSerializer
@@ -33,21 +33,27 @@ def register_view(request):
     return render(request, 'myapp/register.html', {'form': form})
 
 # Вход с переадресацией по роли
+
 def login_view(request):
     if request.method == 'POST':
-        form = AuthenticationForm(request, data=request.POST)
+        form = AuthenticationForm(data=request.POST)
         if form.is_valid():
             user = form.get_user()
             login(request, user)
+            print(f"[LOGIN] Пользователь: {user.username}, Роль: {user.role}")
+
             if user.role == 'teacher':
                 return redirect('teacher_dashboard')
             elif user.role == 'student':
                 return redirect('student_dashboard')
             else:
-                return redirect('course_list')
+                # Показываем ошибку прямо в браузере
+                return HttpResponse(f"Ошибка: неизвестная роль '{user.role}'.")
     else:
         form = AuthenticationForm()
     return render(request, 'myapp/login.html', {'form': form})
+
+
 
 # Выход
 def logout_view(request):
@@ -211,9 +217,6 @@ def lesson_detail_view(request, course_id, lesson_id):
         'lesson': lesson
     })
 
-def student_dashboard(request):
-    courses = Course.objects.all()
-    return render(request, 'myapp/student_dashboard.html', {'courses': courses})
 
 @user_passes_test(is_teacher)
 def enrolled_students(request, course_id):
@@ -231,3 +234,37 @@ def view_submissions(request, task_id):
         'task': task,
         'submissions': submissions
     })
+@login_required
+def student_dashboard(request):
+    courses = Course.objects.all()
+    return render(request, 'myapp/student_dashboard.html', {'courses': courses})
+
+@login_required
+def course_tasks_view(request, course_id):
+    course = get_object_or_404(Course, id=course_id)
+    tasks = Task.objects.filter(lesson__course=course)
+    return render(request, 'myapp/course_tasks.html', {
+        'course': course,
+        'tasks': tasks
+    })
+
+@user_passes_test(is_teacher)
+def teacher_profile(request):
+    courses = Course.objects.filter(teacher=request.user)
+    return render(request, 'myapp/teacher_profile.html', {
+        'teacher': request.user,
+        'courses': courses
+    })
+
+
+@user_passes_test(is_teacher)
+def edit_course(request, course_id):
+    course = get_object_or_404(Course, id=course_id, teacher=request.user)
+    if request.method == 'POST':
+        form = CourseForm(request.POST, instance=course)
+        if form.is_valid():
+            form.save()
+            return redirect('teacher_dashboard')
+    else:
+        form = CourseForm(instance=course)
+    return render(request, 'myapp/edit_course.html', {'form': form})

@@ -1,0 +1,16 @@
+{% extends 'myapp/base.html' %}
+{% block content %}
+
+<h2>Задания по курсу: {{ course.title }}</h2>
+
+{% for task in tasks %}
+<div class="task-card">
+    <h3>{{ task.title }}</h3>
+    <p>{{ task.description }}</p>
+    <p><strong>Deadline:</strong> {{ task.deadline }}</p>
+</div>
+{% empty %}
+<p>Пока нет заданий для этого курса.</p>
+{% endfor %}
+
+{% endblock %}

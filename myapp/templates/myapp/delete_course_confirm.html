@@ -1,0 +1,14 @@
+{% extends 'myapp/base.html' %}
+{% block content %}
+<div class="container" style="max-width: 600px; margin: auto; padding: 30px; background-color: #fff5f8; border-radius: 15px; text-align: center;">
+
+    <h2>Удалить курс</h2>
+    <p>Вы уверены, что хотите удалить курс <strong>"{{ course.title }}"</strong>?</p>
+
+    <form method="POST">
+        {% csrf_token %}
+        <button type="submit" style="background-color: #e60026; padding: 10px 20px; color: white; border: none; border-radius: 10px;">🗑️ Удалить</button>
+        <a href="{% url 'teacher_dashboard' %}" style="margin-left: 20px; text-decoration: underline;">Отмена</a>
+    </form>
+</div>
+{% endblock %}

@@ -21,12 +21,11 @@
         color: white;
     }
 
-    .auth-form input[type="text"],
-    .auth-form input[type="email"],
-    .auth-form input[type="password"] {
+    .auth-form input,
+    .auth-form select {
         width: 100%;
         padding: 14px;
-        margin-bottom: 18px;
+        margin-bottom: 10px;
         border: none;
         border-radius: 20px;
         background-color: #f0f4ff;
@@ -64,15 +63,64 @@
     .auth-wrapper a:hover {
         color: #ffd5e8;
     }
+
+    .errorlist {
+        color: yellow;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        font-size: 14px;
+    }
+
+    .username-check {
+        font-size: 14px;
+        margin-bottom: 10px;
+    }
 </style>
 
 <div class="auth-wrapper">
     <h2>Регистрация</h2>
     <form method="POST" class="auth-form">
         {% csrf_token %}
-        {{ form.as_p }}
+        {{ form.non_field_errors }}
+        {% for field in form %}
+            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+            {{ field }}
+            {{ field.errors }}
+            {% if field.name == 'username' %}
+                <div id="username-check" class="username-check"></div>
+            {% endif %}
+        {% endfor %}
         <button type="submit">Зарегистрироваться</button>
     </form>
     <p>Уже есть аккаунт? <a href="{% url 'login' %}">Войти</a></p>
 </div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const usernameInput = document.querySelector("input[name='username']");
+    const feedback = document.getElementById("username-check");
+
+    usernameInput.addEventListener("input", function () {
+        const username = usernameInput.value;
+        if (username.length < 3) {
+            feedback.innerText = "Минимум 3 символа";
+            feedback.style.color = "yellow";
+            return;
+        }
+
+        fetch(`/check-username/?username=${encodeURIComponent(username)}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.exists) {
+                    feedback.innerText = "Это имя уже занято 😢";
+                    feedback.style.color = "yellow";
+                } else {
+                    feedback.innerText = "Имя доступно ✅";
+                    feedback.style.color = "#00ffcc";
+                }
+            });
+    });
+});
+</script>
 {% endblock %}

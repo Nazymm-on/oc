@@ -6,8 +6,11 @@
 {% for lesson in lessons %}
 <div class="lesson">
     <h3>{{ lesson.title }}</h3>
-    <p>{{ lesson.description }}</p>
+    {% if lesson.video_url %}
     <iframe width="560" height="315" src="{{ lesson.video_url }}" frameborder="0" allowfullscreen></iframe>
+    {% else %}
+    <p>No video available.</p>
+    {% endif %}
 </div>
 {% empty %}
 <p>No lessons yet for this course.</p>

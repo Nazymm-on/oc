@@ -1,12 +1,14 @@
 from django.urls import path
 from . import views
+from .views import course_tasks_view, teacher_profile, student_dashboard, edit_course
 
 urlpatterns = [
     # Главная страница
     path('', views.home_view, name='home'),
 
     # Курсы
-    path('courses/', views.course_list, name='course_list'),
+    path('courses/gallery/', views.course_gallery, name='course_gallery'),
+
     path('course/<int:course_id>/', views.course_detail, name='course_detail'),
 
     # Панели
@@ -25,7 +27,6 @@ urlpatterns = [
     # Отправка задания
     path('task/<int:task_id>/submit/', views.submit_task, name='submit_task'),
 
-    path('courses/', views.course_gallery, name='course_gallery'),
     path('courses/<str:course_name>/', views.course_video, name='course_video'),
 
     path('course/<int:course_id>/video/', views.course_video, name='course_video'),
@@ -52,5 +53,10 @@ urlpatterns = [
     # path('api/enrollments/', views.EnrollmentListAPIView.as_view(), name='api_enrollment_list'),
     path('course/<int:course_id>/students/', views.enrolled_students, name='enrolled_students'),
     path('task/<int:task_id>/submissions/', views.view_submissions, name='view_submissions'),
+    path('courses/<int:course_id>/tasks/', course_tasks_view, name='course_tasks'),
+    path('profile/teacher/', views.teacher_profile, name='teacher_profile'),
+    path('student/dashboard/', student_dashboard, name='student_dashboard'),
+    path('courses/<int:course_id>/edit/', edit_course, name='edit_course'),
+
 
 ]

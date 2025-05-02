@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
-from .models import User, Lesson, Task
+from .models import User, Lesson, Task, Course
 
 class CustomUserCreationForm(UserCreationForm):
     class Meta:
@@ -33,3 +33,8 @@ class TaskForm(forms.ModelForm):
     class Meta:
         model = Task
         fields = ['title', 'description', 'deadline']
+
+class CourseForm(forms.ModelForm):
+    class Meta:
+        model = Course
+        fields = ['title', 'slug', 'description', 'video_url']
